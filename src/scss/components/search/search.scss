@@ -1,0 +1,44 @@
+.search {
+  padding: 8px;
+  background: $color-grey;
+  border-radius: 8px;
+
+  &__input {
+    padding: 2px 4px;
+    border-radius: 8px;
+    width: 100%;
+    background: $color-decor-grey;
+    display: flex;
+    align-items: center;
+
+    input {
+      padding: 16px;
+      width: 100%;
+      font-size: 22px;
+      color: white;
+      outline: none;
+    }
+  }
+
+  &__history {
+    border-radius: 8px;
+    margin-top: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: $color-decor-grey;
+  }
+
+  &__history-item {
+    padding: 8px;
+    font-size: 22px;
+    transition: background-color .3s;
+
+    &:hover {
+      border-radius: 8px;
+      background: $color-grey;
+      cursor: pointer;
+    }
+  }
+}
