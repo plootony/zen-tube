@@ -8,9 +8,10 @@
         v-for="item in items"
         :key="item.id"
         class="showcase__item"
+        @click.stop="selectVideo(item)"
       >
         <img
-          :src="item.snippet.thumbnails.medium.url"
+          :src="item.snippet.thumbnails.high.url"
           alt="Превью"
           class="showcase__item-img"
           width="500"
@@ -31,6 +32,11 @@
 
 <script setup lang="ts">
 const props = defineProps(['items'])
+const emit = defineEmits(['selectVideo'])
+
+const selectVideo = (item: Object) => {
+  emit('selectVideo', item)
+}
 </script>
 
 <style scoped></style>

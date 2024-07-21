@@ -3,12 +3,19 @@
 
   <main class="main">
     <div class="container">
-      <AppSearch @search="searchVideos" />
+      <keep-alive>
+        <AppSearch @search="searchStore.searchVideos" />
+      </keep-alive>
 
-      <AppShowcase
-        v-if="results.length"
-        :items="results"
-      />
+      <AppPlayer :item="selectedVideo" />
+
+      <keep-alive>
+        <AppShowcase
+          v-if="searchStore.results.length"
+          :items="searchStore.results"
+          @select-video="selectVideo"
+        />
+      </keep-alive>
     </div>
   </main>
 
@@ -21,26 +28,15 @@ import AppSearch from '@/components/AppSearch.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import AppSearchResult from '@/components/AppShowcase.vue'
 import AppShowcase from '@/components/AppShowcase.vue'
+import { useSearchStore } from '@/stores/search'
+import AppPlayer from '@/components/AppPlayer.vue'
 import { ref } from 'vue'
-import axios from 'axios'
 
-const results = ref([])
+const searchStore = useSearchStore()
+const selectedVideo = ref()
 
-const searchVideos = async (query: string) => {
-  try {
-    const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-      params: {
-        part: 'snippet',
-        maxResults: 10,
-        q: query,
-        key: import.meta.env.VITE_YOUTUBE_API_KEY
-      }
-    })
-    results.value = response.data.items
-
-    console.log(results.value)
-  } catch (err) {
-    console.error(err)
-  }
+const selectVideo = (item: Object) => {
+  selectedVideo.value = item
+  searchStore.isPLaying = true
 }
 </script>

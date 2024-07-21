@@ -1,0 +1,38 @@
+.player {
+  margin-top: 8px;
+  width: 100%;
+
+  &__body {
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #2a2a2c;
+  }
+
+  &__title {
+    margin-top: 8px;
+    font-size: 28px;
+  }
+
+  &__desc {
+    margin-top: 8px;
+  }
+
+  iframe {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  &--compact {
+    position: fixed;
+    right: calc((100vw - 1440px) / 2);
+    bottom: 32px;
+    width: 500px;
+
+    .player__title,
+    .player__desc {
+      display: none;
+    }
+  }
+}
