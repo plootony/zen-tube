@@ -1,15 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios, { AxiosError } from 'axios'
-
-const API_BASE = import.meta.env.DEV ? 'http://localhost:3000' : ''
+import axios from 'axios'
 
 export const useSearchStore = defineStore('search', () => {
   const results = ref([])
   const isPLaying = ref(false)
   const isCompact = ref(false)
   const isLoading = ref(false)
-  const error = ref<Error | null>(null)
+  const error = ref(null)
   const searchCache = ref(new Map())
 
   const searchVideos = async (query: string) => {
@@ -26,15 +24,20 @@ export const useSearchStore = defineStore('search', () => {
     }
 
     try {
-      const response = await axios.get(`${API_BASE}/api/search`, {
+      const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
-          q: query
+          part: 'snippet',
+          maxResults: 10,
+          q: query,
+          key: import.meta.env.VITE_YOUTUBE_API_KEY
         }
       })
       results.value = response.data.items
+
+      console.log(results.value)
       searchCache.value.set(query, response.data.items)
     } catch (err) {
-      error.value = err instanceof Error ? err : new Error('An unknown error occurred')
+      error.value = err
     } finally {
       isLoading.value = false
     }
