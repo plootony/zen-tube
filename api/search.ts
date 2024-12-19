@@ -11,6 +11,13 @@ export default async function handler(
     return response.status(400).json({ error: 'Query parameter is required' })
   }
 
+  if (!process.env.YOUTUBE_API_KEY) {
+    return response.status(500).json({ 
+      error: 'YouTube API key is not configured',
+      env: process.env.YOUTUBE_API_KEY ? 'exists' : 'missing'
+    })
+  }
+
   try {
     const youtubeResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
       params: {
@@ -23,6 +30,11 @@ export default async function handler(
 
     return response.status(200).json(youtubeResponse.data)
   } catch (error) {
-    return response.status(500).json({ error: 'Failed to fetch data from YouTube API' })
+    const axiosError = error as any
+    return response.status(500).json({ 
+      error: 'Failed to fetch data from YouTube API',
+      details: axiosError.response?.data || axiosError.message,
+      status: axiosError.response?.status
+    })
   }
 } 
