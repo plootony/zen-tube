@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios, { AxiosError } from 'axios'
 
+const API_BASE = import.meta.env.DEV ? 'http://localhost:3000' : ''
+
 export const useSearchStore = defineStore('search', () => {
   const results = ref([])
   const isPLaying = ref(false)
@@ -24,7 +26,7 @@ export const useSearchStore = defineStore('search', () => {
     }
 
     try {
-      const response = await axios.get('/api/search', {
+      const response = await axios.get(`${API_BASE}/api/search`, {
         params: {
           q: query
         }
